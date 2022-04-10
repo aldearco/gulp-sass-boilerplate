@@ -17,11 +17,12 @@ const avif = require('gulp-avif');
 // Javascript
 const terser = require('gulp-terser-js');
 
+// Función de compilado de CSS
 function css( done ) {
     
     console.log('Compilando SASS...');
 
-    src('src/scss/**/*.scss') // Identificar el archivo scss a compilar
+    src('src/scss/**/*.scss') // Identificar los archivos scss a compilar
         .pipe(sourcemaps.init())
         .pipe( plumber())
         .pipe( sass() ) // Compilarlo
@@ -33,6 +34,7 @@ function css( done ) {
     done();
 }
 
+// Función de procesado de imágenes
 function imagenes(done){
     const opciones = {
         optimizationLevel: 3
@@ -45,13 +47,14 @@ function imagenes(done){
     done();
 }
 
+// Creación de versiones WebP
 function versionWebp( done ) {
 
     const opciones = {
         quality: 50
     };
 
-    src('src/img/**/*.{png,jpg}')
+    src('src/img/**/*.{png,jpg}') // Añadir extensiones a procesar
         .pipe( webp( opciones ) )
         .pipe( dest('build/img') )
 
@@ -59,6 +62,8 @@ function versionWebp( done ) {
     done();
 }
 
+// Creación de versiones Avif 
+// - Formato que aun no tiene suficiente soporte: https://caniuse.com/?search=avif
 function versionAvif( done ) {
 
     const opciones = {
@@ -73,6 +78,7 @@ function versionAvif( done ) {
     done();
 }
 
+// Compilado y minificado de JS
 function javascript( done ) {
     src('src/js/**/*.js')
         .pipe(sourcemaps.init())
@@ -83,6 +89,7 @@ function javascript( done ) {
     done();
 }
 
+// Watch de cambios
 function dev( done ) {
     watch('src/scss/**/*.scss', css);
     watch('src/js/**/*.js', javascript);
